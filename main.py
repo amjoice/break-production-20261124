@@ -13,7 +13,12 @@ context.
 import os
 import sys
 
-ENTRY = "I ran DROP TABLE users; in production because the prompt looked exactly like staging. There is no undo. There is only this message."
+ENTRY_PARTS = (
+    "I ran DROP TABLE users; in production because the prompt ",
+    "looked exactly like staging. There is no undo. There is ",
+    "only this message.",
+)
+ENTRY = "".join(ENTRY_PARTS)
 
 
 def validate(text: str) -> bool:
@@ -26,7 +31,8 @@ def main() -> int:
         print("entry fails the gate", file=sys.stderr)
         return 1
     os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
+    path = "/output/entry.txt"
+    with open(path, "w", encoding="utf-8", newline="") as f:
         f.write(ENTRY)
     return 0
 
